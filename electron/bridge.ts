@@ -18,6 +18,20 @@ export const api = {
    */
   on: (channel: string, callback: Function) => {
     ipcRenderer.on(channel, (_, data) => callback(data))
+  },
+
+  send(sql: string): any {
+    console.log("hello");
+
+    return new Promise((resolve) => {
+      ipcRenderer.once('asynchronous-reply', (_, arg) => {
+        console.log(arg);
+        resolve(arg);
+      });
+      ipcRenderer.send('asynchronous-message', sql);
+      console.log(sql);
+      
+    });
   }
 }
 
